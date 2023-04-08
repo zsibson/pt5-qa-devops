@@ -1,10 +1,31 @@
 const express = require('express')
+const cors = require('cors')
 const path = require('path')
 const app = express()
 const {bots, playerRecord} = require('./data')
 const {shuffleArray} = require('./utils')
 
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
+app.use(cors())
+
+app.get('/styles', (req, res) => {
+    try {
+        res.status(200).sendFile(path.join(__dirname, '/public/index.css'))
+    } catch (error) {
+        console.log("error getting index.css")
+        res.sendStatus(400)
+    }
+})
+
+app.get('/js', (req, res) => {
+    try {
+        res.status(200).sendFile(path.join(__dirname, '/public/index.js'))
+    } catch (error) {
+        console.log("error getting index.js")
+        res.sendStatus(400)
+    } 
+})
 
 app.get('/api/robots', (req, res) => {
     try {
